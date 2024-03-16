@@ -126,8 +126,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:ctm-933093:4839124")
-
+    //implementation fg.deobf("curse.maven:ctm-235729:4101942") unused for now
+    //implementation fg.deobf("curse.maven:ctm-910095:5025060") unused for now
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

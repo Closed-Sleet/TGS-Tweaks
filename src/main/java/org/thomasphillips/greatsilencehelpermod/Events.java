@@ -1,18 +1,26 @@
 package org.thomasphillips.greatsilencehelpermod;
 
-import github.pitbox46.hiddennames.data.Animations;
-import github.pitbox46.hiddennames.data.NameData;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.logging.LogUtils;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.slf4j.Logger;
 
 public class Events {
-    // Hide player names automatically, config is bugged in hidden names mod and won't hide by default
-    @SubscribeEvent
-    public void playerJoins(PlayerEvent.PlayerLoggedInEvent event) {
-        NameData data = NameData.DATA.get(event.getEntity().getUUID());
-        data.setAnimation(Animations.HIDDEN);
-        NameData.sendSyncData();
-        //event.getEntity().sendSystemMessage(Component.literal("Working"));
-    }
+    private static final Logger LOGGER = LogUtils.getLogger();
 
+    @SubscribeEvent
+    public void addPlayerToTeam(PlayerEvent.PlayerLoggedInEvent event) {
+        MinecraftServer server = event.getEntity().getServer();
+        CommandSourceStack commandSource = event.getEntity().getServer().createCommandSourceStack();
+
+        try {
+            server.getCommands().getDispatcher().execute("team join invisible " + event.getEntity().getName().getString(), commandSource);
+        } catch (CommandSyntaxException exception) {
+            LOGGER.error("Command failed to add player to invisible team");
+            LOGGER.error(exception.toString());
+        }
+    }
 }
