@@ -1,10 +1,12 @@
 package org.thomasphillips.greatsilencehelpermod;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +18,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(GreatSilenceHelperMod.MODID)
@@ -67,13 +72,11 @@ public class GreatSilenceHelperMod {
         try {
             server.getCommands().getDispatcher().execute("team add invisible", commandSource);
             server.getCommands().getDispatcher().execute("team modify invisible nametagVisibility never", commandSource);
-
         } catch (CommandSyntaxException exception) {
             LOGGER.info("Error failed to create invisible team or failed to set nametagVisbility never");
             LOGGER.error(exception.toString());
         }
     }
-
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     /*@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
